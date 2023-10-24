@@ -1,0 +1,57 @@
+.body_head{
+  width: 90%;
+  margin-left: 5%;
+}
+.slide_image {
+  width: 100%;
+}
+
+.Electronic_box_head{
+  font-weight: bold;
+  margin-bottom: 330px;
+  height: 50px;
+  float: left;
+  width: 0;
+  display: flex;
+  flex-direction: unset;
+}
+.main_Electronic_box {
+  height: 350px;
+  background-color: antiquewhite;
+  display: flex;
+  flex-direction: row;
+  justify-content:space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.sub_Electronic_box {
+  width: 220px;
+  height:250px;
+  border: 1px;
+  border-style: solid;
+  border-color: rgb(189, 189, 189);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+
+}
+
+.Electronic_box_image {
+  width: 80%;
+  height: 70%;
+}
+.Electronic_box_image:hover{
+  width: 81%;
+  height: 71%;
+}
+
+.Electronic_box_para {
+  font-size: 15px;
+  display: flex;
+  justify-content: center;
+  margin-top: 0;
+  margin-bottom: 0;
+}
