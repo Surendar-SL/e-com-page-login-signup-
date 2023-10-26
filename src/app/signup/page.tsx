@@ -14,16 +14,18 @@ import axois from 'axios'
 
 
 export default function SignUp() {
-    const [userName, setUserName]= useState<string>('');
+    const [userName, setUserName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [Password, setPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
     const [showValidationMessage, setShowValidationMessage] = useState<boolean>(false);
     const [validationMessage, setValidationMessage] = useState<string>("");
     const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
     const [alertMessage, setAlertMessage] = useState<string>('');
+    const [emailAlreadyRegistered, setEmailAlreadyRegistered] = useState(false);
 
-    
+
 
     const validatePassword = () => {
         const passwordRegex = /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,10}$/;
@@ -41,19 +43,23 @@ export default function SignUp() {
         }
     }
     const isFormValid =
-    userName.trim() !== '' &&
-    email.trim() !== '' &&
-    Password.trim() !== '' &&
-    confirmPassword.trim() !== '' &&
-    !showValidationMessage;
+        userName.trim() !== '' &&
+        email.trim() !== '' &&
+        Password.trim() !== '' &&
+        confirmPassword.trim() !== '' &&
+        !showValidationMessage;
 
     const handlePasswordVisibility = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
     };
 
+    const handleConfirmPasswordVisibility = () => {
+        setShowConfirmPassword((prevShowConfirmPassword) => !prevShowConfirmPassword);
+    };
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-       
+
         if (Password !== confirmPassword) {
             setShowValidationMessage(true);
             setValidationMessage("Passwords do not match.");
@@ -69,17 +75,31 @@ export default function SignUp() {
             password: password,
         });
 
-        axois.post("http://localhost:3001/signup",{userName, email, password, confirmPassword})
-        .then(result => {
-            setAlertMessage('Registration successful');
-            setUserName('');
-            setEmail('');
-            setPassword('');
-            setConfirmPassword('');
-        })
-        
-        .catch(err=>console.log(err))
-    }
+       
+
+        setTimeout(() => {
+
+            axois.post("http://localhost:3001/signup", { userName, email, password, confirmPassword })
+                .then((response) => {
+                    if (response.data.emailAlreadyRegistered) {
+                        setEmailAlreadyRegistered(true);
+                    }
+                    else
+                        setEmailAlreadyRegistered(false);
+                    setAlertMessage('Registration successful');
+                    setUserName('');
+                    setEmail('');
+                    setPassword('');
+                    setConfirmPassword('');
+
+
+                })
+
+                .catch((error) => {
+                    console.log(error);
+                });
+        }, 8000);
+    };
 
     return (
         <div >
@@ -139,7 +159,7 @@ export default function SignUp() {
                             fullWidth
                             name='confirmPassword'
                             label='Confirm Password'
-                            type='password'
+                            type={showConfirmPassword ? 'text' : 'password'}
                             id='confirmPassword'
                             autoComplete='current-password'
                             value={confirmPassword}
@@ -147,7 +167,7 @@ export default function SignUp() {
                             onInput={validatePassword}
                             InputProps={{
                                 endAdornment: (
-                                    <span onClick={handlePasswordVisibility}>
+                                    <span onClick={handleConfirmPasswordVisibility}>
                                         {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
                                     </span>
                                 )
@@ -156,11 +176,18 @@ export default function SignUp() {
                         {showValidationMessage && (
                             <span className={styles.validation_message}>{validationMessage}</span>
                         )}
-                       <Button className={!isFormValid? styles.signup_button_valid : styles.signup_button} type='submit' variant='contained' sx={{ mt: 3, mb: 2 }} disabled={!isFormValid}>
-                           Sign Up
+                       
+                        {emailAlreadyRegistered && (
+                            <span className={styles.error_message_registeredEmail}>Email is Already Registered, use another Email</span>
+                        ) }
+                        {alertMessage &&  (
+                            <div className={styles.alertMessage}>{alertMessage}</div>
+                        ) }
+                        <Button className={!isFormValid ? styles.signup_button_valid : styles.signup_button} type='submit' variant='contained' sx={{ mt: 3, mb: 2 }} disabled={!isFormValid}>
+                            Sign Up
                         </Button>
                         <Link className={styles.login_page_router} href="/login">
-                            Log In?
+                            Log In ?
                         </Link>
                     </Box>
                 </Box>

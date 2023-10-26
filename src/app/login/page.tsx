@@ -26,20 +26,20 @@ export default function Login(props: LoginProps) {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [alertMessage, setAlertMessage] = useState<string>('');
   const [alertFailedMessage, setAlertFailedMessage] = useState<string>(' ')
-  const [userName, setUserName]=useState<string>('')
+  const [userName, setUserName] = useState<string>('')
   const router = useRouter();
 
-  const handleNavigation = () => {
+  const handleNavigation = (newUserName: string) => {
     router.push('/');
   };
- 
+
 
   const handlePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
-  const isEmailValid = email.trim() !== ''  ;
-  const isPasswordValid = password.trim() !== '' ;
+  const isEmailValid = email.trim() !== '';
+  const isPasswordValid = password.trim() !== '';
   const isButtonDisabled = !isEmailValid || !isPasswordValid;
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -58,18 +58,16 @@ export default function Login(props: LoginProps) {
         const newUserName = response.data.userName;
         setUserName(newUserName);
         console.log("Login SUccessfully")
-        console.log("User Name:", newUserName); 
-        handleNavigation(); 
-        return (
-          <Layout newUserName={newUserName} > </Layout>
-          
-        )
+        console.log("User Name:", newUserName);
+        handleNavigation(newUserName);
+        <Layout newUserName={newUserName}></Layout>
+
       }
       else {
-        setAlertFailedMessage("Login failed. Please check your email and password.");
+        setAlertFailedMessage("Login failed. Please check your email or password.");
 
 
-        console.log("Login failed. Please check your email and password.");
+        console.log("Login failed. Please check your email or password.");
       }
     }
     catch (error) {
@@ -118,7 +116,7 @@ export default function Login(props: LoginProps) {
                   ),
                 }}
               />
-              <Button  className={isButtonDisabled ? styles.login_btn_disabled : styles.login_btn} type='submit' variant='contained' sx={{ mt: 4, mb: 3 }} disabled={isButtonDisabled}>
+              <Button className={isButtonDisabled ? styles.login_btn_disabled : styles.login_btn} type='submit' variant='contained' sx={{ mt: 4, mb: 3 }} disabled={isButtonDisabled}>
                 Log In
               </Button>
               <div className={styles.alertMessage}>{alertMessage}</div>

@@ -10,11 +10,10 @@
     align-items: center;    
     justify-content: center;
     list-style: none;
-    height: 55px;
-    
-
+    height: 55px; 
 }
 .nav_li{
     list-style: none;
     margin-left: 15px;
+    text-decoration: none;
 }

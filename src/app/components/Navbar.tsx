@@ -6,9 +6,6 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
 
-
-
-
 const Navbar: React.FC <{ newUserName: string }> = ({ newUserName }) => {
     console.log("User Name (in Navbar):", newUserName);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -17,38 +14,39 @@ const Navbar: React.FC <{ newUserName: string }> = ({ newUserName }) => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = () => {
+    const handleClose = () => { 
         setAnchorEl(null);
     };
 
     return (<nav className={styles.navbar}>
         <ul className={styles.nav_ul}>
-            <li className={styles.nav_li}><Link href="/">Home</Link></li>
-            <li className={styles.nav_li}><Link href="/shop">Shop</Link></li>
-            <li className={styles.nav_li}><Link href="/grocery">Grocery</Link></li>
-            <li className={styles.nav_li}>
-                <a href="#" onClick={handleClick}>Electronics</a>
+            <li><Link className={styles.nav_li} href="/">Home</Link></li>
+            <li><Link className={styles.nav_li} href="/shop">Shop</Link></li>
+            <li><Link className={styles.nav_li} href="/grocery">Grocery</Link></li>
+            <li>
+                <a className={styles.nav_li} href="#" onClick={handleClick}>Electronics</a>
                 <Menu
                     anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
+                    open={Boolean(anchorEl)}    
                     onClose={handleClose}
                 >
                     <MenuItem onClick={handleClose}>
-                        <Link href="/electronics/mobiles">Mobiles</Link>
+                        <Link className={styles.nav_li} href="/electronics/mobiles">Mobiles</Link>
                     </MenuItem>
                     <MenuItem onClick={handleClose}>
-                        <Link href="/electronics/laptops">Laptops</Link>
+                        <Link className={styles.nav_li} href="/electronics/laptops">Laptops</Link>
                     </MenuItem>
                 </Menu>
             </li>
 
-            <li className={styles.nav_li}>
-            {newUserName ? (<div>
-            <span>Hello, {newUserName}</span></div>
-        ) :(<Link href="/login">LogIn</Link>)}</li>
-            <li className={styles.nav_li}><Link href="/signup">SignUp</Link></li>
+            <li >
+            {newUserName ? (
+            <span>Hello, {newUserName}</span>
+        ) :(<Link className={styles.nav_li} href="/login">LogIn</Link>)}</li>
+            <li ><Link className={styles.nav_li} href="/signup">SignUp</Link></li>
         </ul>
     </nav>);
 }
 
 export default Navbar;
+
